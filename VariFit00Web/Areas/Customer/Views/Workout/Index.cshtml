@@ -1,0 +1,126 @@
+﻿@model List<Workout>
+
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Workout List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+
+        <div class="row pb-3">
+            <div class="col-6">
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Workout" asp-action="EquipmentAndMuscleSelection" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add New Workout</a>
+            </div>
+
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Workout Name
+                    </th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>
+                            Creator
+                        </th>
+                    }
+                    <th>
+                        Muscles Worked
+                    </th>
+                    <th>
+                        Equipment Used
+                    </th>
+                    <th>
+                        Publish
+                    </th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>
+                        </th>
+                    }
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                }
+                @foreach (var obj in Model.OrderBy(u => u.Id))
+                {
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            <a asp-controller="Workout" asp-action="OverviewWorkout" asp-route-id="@obj.Id">@obj.Name</a>
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                @obj.Creator
+                            </td>
+                        }
+                        
+                        <td>
+                            @obj.MusclesTargetedNames
+                        </td>
+                        <td>
+                            @obj.EquipmentChosenNames
+                        </td>
+
+                        <td class="text-center ">
+                            <input type="checkbox" asp-for="@obj.IsPublished" 
+                                onclick="publishWorkout(@obj.Id, this.checked)"/>
+                        </td>
+
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Workout" asp-action="OverviewWorkout" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="Workout" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash3"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<script>
+    function publishWorkout(workoutId, isPublished) {
+        $.ajax({
+            url: '@Url.Action("PublishWorkout", "Workout")',
+            type: 'POST',
+            data: { id: workoutId, isPublished: isPublished },
+            success: function (result) {
+                if (result.success) {
+                    toastr.success(result.message);
+                } else {
+                    toastr.error(result.message);
+                }
+            },
+            error: function () {
+                toastr.error('An error occurred while publishing the workout.');
+            }
+        });
+    }
+</script>

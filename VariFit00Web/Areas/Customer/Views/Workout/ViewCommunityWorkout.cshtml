@@ -1,0 +1,101 @@
+﻿@model OverviewWorkoutVM
+
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">
+                    Workout: @Model.Workout.Name
+                </h2>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+
+        <div class="row ">
+            <div class="col-6">
+                Equipment used: <strong>@Model.EquipmentNames</strong>
+
+            </div>
+        </div>
+
+        <div class="row pb-3">
+            <div class="col-6">
+                Muscle targeted: <strong>@Model.MuscleNames</strong>
+            </div>
+
+@*             <div class="col-6 text-end">
+                <form method="get" asp-controller="Workout" asp-action="AddExeToWorkout">
+                    <input type="hidden" name="workoutId" value="@Model.Workout.Id" />
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Exercise</button>
+                </form>
+            </div> *@
+
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">
+                        #
+                    </th>
+                    <th>
+                        Exercise
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                }
+                @foreach (var obj  in Model.Exercises)
+                {
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @obj.Text
+                        </td>
+                        <td>
+                            <div class="text-end" role="group">
+                                <form method="post" asp-controller="Workout" asp-action="DeleteWorkoutExercise">
+                                    <input type="hidden" name="workoutId" value="@Model.Workout.Id" />
+                                    <input type="hidden" name="exerciseId" value="@obj.Value" />
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+
+        </table>
+
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <a asp-controller="Workout" asp-action="Community" class="btn btn-secondary border form-control">
+                    Back to Community Workouts
+                </a>
+            </div>
+            <div class="col-6 col-md-9 text-end">
+                <form method="post" asp-controller="Workout" asp-action="SaveFavorite">
+                    <input type="hidden" name="workoutId" value="@Model.Workout.Id" />
+                    <button type="submit" class="btn btn-primary">Save to Favorites</button>
+                </form>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+<form asp-antiforgery="true"></form>
+

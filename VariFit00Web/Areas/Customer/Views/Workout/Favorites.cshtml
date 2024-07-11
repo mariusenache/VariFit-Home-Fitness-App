@@ -1,0 +1,53 @@
+﻿@model List<Workout>
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Favorite Workouts</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Workout Name</th>
+                    <th>Creator</th>
+                    <th>Muscles Worked</th>
+                    <th>Equipment Used</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                }
+                @foreach (var obj in Model.OrderBy(u => u.Id))
+                {
+                    <tr>
+                        <td>@counter</td>
+                        <td>@obj.Name</td>
+                        <td>@obj.Creator</td>
+                        <td>@obj.MusclesTargetedNames</td>
+                        <td>@obj.EquipmentChosenNames</td>
+                        <td>
+                            <a asp-controller="Workout" asp-action="ViewCommunityWorkout" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                        </td>
+                        <td>
+                            <form asp-action="RemoveFavorite" method="post">
+                                <input type="hidden" name="workoutId" value="@obj.Id" />
+                                <button type="submit" class="btn btn-danger">Remove Favorite</button>
+                            </form>
+                        </td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

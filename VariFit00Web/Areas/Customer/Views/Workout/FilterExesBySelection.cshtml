@@ -1,0 +1,59 @@
+﻿@model FilterExesBySelectionDTO 
+<div class="card-body p-4 mb-4">
+
+    <form method="post" asp-action="FilterExesBySelection" asp-controller="Workout">
+        @* <input type="hidden" asp-for="SelectedEquipments" />
+        <input type="hidden" asp-for="SelectedMuscles" /> *@
+
+        <div class="card shadow border-0 mt-1">
+            <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2 class="text-white py-2">Select Exercises For Your Workout</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Workout.Name" class="ms-2">Name your workout</label>
+                    <input asp-for="Workout.Name" class="form-control border-0 shadow" />
+                    <span asp-validation-for="Workout.Name" class="text-danger"></span>
+                </div>
+              @*   <div class="col-md-6 mb-3">
+                    <label asp-for="Workout.Creator" class="ms-2">Creator of your workout</label>
+                    <input asp-for="Workout.Creator" class="form-control border-0 shadow" />
+                    <span asp-validation-for="Workout.Creator" class="text-danger"></span>
+                </div> *@
+            </div>
+
+            <div class="form-floating py-2 col-12">
+                <select asp-for="SelectedExercises" asp-items="@Model.ExercisesFilteredBySelection" class="form-select border-0 shadow" multiple style="height: 220px;">
+                    <option disabled selected>--Select Exercises--</option>
+                </select>
+                <label asp-for="SelectedExercises" class="ms-2">Choose exercises</label>
+                <span asp-validation-for="SelectedExercises" class="text-danger"></span>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary form-control">Create Workout</button>
+                </div>
+                <div class="col-6">
+                    <a asp-controller="Workout" asp-action="EquipmentAndMuscleSelection" class="btn btn-secondary border form-control">
+                        Back to Selection
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+
+@section Scripts{           @*CLIENT SIDE VALIDATION to keep the list of exes populated *@
+    @{
+    <partial name="_ValidationScriptsPartial"/>
+    }
+}

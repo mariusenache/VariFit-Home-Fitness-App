@@ -1,0 +1,26 @@
+﻿@model EquipmentAndMuscleSelectionVM
+
+
+<form asp-action="FilterExesBySelection" method="get">
+    <div class="form-group">
+        <label for="SelectedEquipments"><strong>Select Equipment</strong></label>
+        <select asp-for="SelectedEquipments" class="form-control" multiple size="6">
+            @foreach (var item in Model.AllEquipmentList)
+            {
+                <option value ="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="SelectedMusles"><strong>Select Muscle: </strong></label>
+        <select asp-for="SelectedMuscles" class="form-control" multiple size="12">
+            @foreach (var item in Model.AllMuscleList)
+            {
+                <option value = "@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit selection</button>
+</form>
+

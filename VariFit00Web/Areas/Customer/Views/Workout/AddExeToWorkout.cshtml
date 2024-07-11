@@ -1,0 +1,66 @@
+﻿@model AddExeToWorkoutDTO
+
+<div class="card-body p-4 mb-4">
+
+    <form method="post" asp-action="AddExeToWorkout" asp-controller="Workout">
+        <input type="hidden" name="WorkoutId" value="@Model.Workout.Id" /> 
+
+        <div class="card shadow border-0 mt-4">
+            <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h2 class="text-white py-2">Add Exercises to Workout: @Model.Workout.Name</h2>
+                        <p class="text-white">Creator: @Model.Workout.Creator</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="form-floating py-2 col-12">
+                @foreach (var exercise in Model.ExercisesFilteredBySelection)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" 
+                        type="radio" 
+                        name="SelectedEx" 
+                        value="@exercise.Value" 
+                        id="exercise-@exercise.Value"
+                        @(Model.ExistingExercises.ToList().Contains(int.Parse(exercise.Value)) ? "disabled" : "")>
+                        <label class="form-check-label" for="exercise-@exercise.Value">
+                            @exercise.Text
+                        </label>
+                    </div>
+                }
+                <span asp-validation-for="SelectedEx" class="text-danger"></span>
+            </div>
+
+@* 
+            <div class="list-group">
+                @foreach (var exercise in Model.ExercisesFilteredBySelection)
+                {
+                    <button type="button" class="list-group-item list-group-item-action"
+                            asp-for="SelectedEx" asp-route-value="@exercise.Value">
+                        @exercise.Text
+                    </button>
+                }
+            </div>
+
+            <input type="hidden" name="SelectedEx" id="selectedEx" />
+ *@
+
+            <div class="row pt-2">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">Add Exercises</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Workout" asp-action="OverviewWorkout" asp-route-id="@Model.Workout.Id" class="btn btn-secondary border form-control">
+                        Back to Workout Overview
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
